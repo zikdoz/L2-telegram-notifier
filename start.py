@@ -26,7 +26,8 @@ def main():
     logging.info('firing up telegram bot..')
     
     telebot = TeleBot()
-    telebot.readConfig('tele-config.yaml')
+    telebot.readConfig('./config/tele-config.yaml')
+    telebot.start()
 
 if __name__ == '__main__':
     main()
