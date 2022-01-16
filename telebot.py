@@ -9,6 +9,11 @@ from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, Callb
 class TeleBot:
     _auth_token = ''
 
+    _updater = None
+
+    def commandHelp(self, update: Update, ctx: CallbackContext):
+        update.message.reply_text('TBD')
+
     def readConfig(self, config_path):
         logging.info(f'trying to parse given config: `{config_path}`')
         
@@ -54,4 +59,17 @@ class TeleBot:
 
         logging.info('trying to start bot..')
 
+        self._updater = Updater(self._auth_token)
         
+        dispatcher = self._updater.dispatcher
+
+        dispatcher.add_handler(CommandHandler('help', self.commandHelp))
+
+        logging.info('bot starts polling. Waiting for user commands..')
+
+        self._updater.start_polling()
+
+        # Run the bot until you press Ctrl-C or the process receives SIGINT,
+        # SIGTERM or SIGABRT. This should be used most of the time, since
+        # start_polling() is non-blocking and will stop the bot gracefully.
+        self._updater.idle()
